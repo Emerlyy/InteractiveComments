@@ -5,27 +5,30 @@ import { changeContent } from "./comments-slice";
 
 const EditContent = ({ id, onClose, replyingTo = '', children }) => {
 
-  console.log(children);
+  const to = replyingTo === '' ? '' : `@${replyingTo}`;
 
-  const to = replyingTo === '' ? '' : '@' + replyingTo;
-
-  const [value, setValue] = useState(to + children);
-
-  console.log(value);
+  const [value, setValue] = useState(to + formatContent(children));
 
   const textarea = useRef(null);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const handleChange = function () {
-      if (this.scrollTop > 0) {
-        console.log('d')
-        this.style.height = this.scrollHeight + "px";
+    const current = textarea.current;
+
+    if (current !== null) {
+
+      const handleChange = () => {
+        current.style.height = current.scrollHeight + "px";
       }
+
+      handleChange();
+
+      current.addEventListener('keyup', handleChange);
+
+      return () => current.removeEventListener('keyup', handleChange);
     }
-    textarea.current.addEventListener('keyup', handleChange);
-  }, [textarea]);
+  }, [textarea.current]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

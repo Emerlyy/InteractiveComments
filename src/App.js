@@ -20,8 +20,8 @@ function App() {
   }, [dispatch, data.currentUser]);
 
   return (
-    <div className="container m-auto px-10 py-16 sm:p-3">
-       <ConfirmationModal />
+    <div className="container m-auto lg:px-10 lg:py-16 md:px-6 md:py-10 p-4">
+      <ConfirmationModal />
       <CommentList />
       <NewComment />
     </div>

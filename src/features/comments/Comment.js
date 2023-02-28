@@ -16,8 +16,8 @@ const CommentContainer = ({ children, id, ...props }) => {
   return (
     <div className="flex flex-col gap-y-6">
       <Comment id={id} {...props} />
-      {replies?.length > 0 && <div className="grid justify-center grid-cols-[100px_1fr]">
-        <span className="pl-12 w-px h-full border-r-2"></span>
+      {replies?.length > 0 && <div className="grid justify-center grid-cols-[20px_1fr] md:grid-cols-[100px_1fr]">
+        <span className="md:pl-12 w-px h-full border-r-2"></span>
         <ul className="flex flex-col gap-y-6">
           {replies.map((r) => <Comment key={r.id} parentId={id} {...r} />)}
         </ul>
@@ -45,8 +45,9 @@ const Comment = ({ id, user, content, createdAt, score, replyingTo, parentId = i
 
   return (
     <>
-      <div className="flex bg-white p-6 rounded-lg gap-x-5">
-        <div className="flex flex-col items-center  gap-y-1 bg-main rounded-lg h-fit">
+      {/* <div className="flex md:flex-row flex-col-reverse bg-white p-6 rounded-lg md:gap-x-5 gap-y-3"> */}
+      <div className="grid md:grid-cols-[auto_1fr] md:grid-rows-none grid-rows-[1fr_auto] grid-cols-2 bg-white p-6 rounded-lg md:gap-x-5 gap-y-3">
+        <div className="md:row-start-auto row-start-2 flex md:flex-col flex-row items-center gap-y-1 bg-main rounded-lg w-fit h-fit">
           <button
             onClick={() => dispatch(increaseScore(id))}
             className="group transition-colors flex w-10 h-8 items-center justify-center">
@@ -59,7 +60,7 @@ const Comment = ({ id, user, content, createdAt, score, replyingTo, parentId = i
             <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg"><path className='group-hover:fill-purple transition-colors' d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" fill="#C5C6EF" /></svg>
           </button>
         </div>
-        <div className="flex-grow">
+        <div className="md:col-start-auto col-start-1 col-end-3">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <img className="block w-8 h-8 mr-3" src={user.image.png} />
@@ -67,26 +68,28 @@ const Comment = ({ id, user, content, createdAt, score, replyingTo, parentId = i
               {user.username === currentUser.username && <Badge>You</Badge>}
               <span className="text-sm text-gray-500 ml-2">{createdAt}</span>
             </div>
-            {
-              user.username === currentUser.username
-                ? <div className="flex gap-x-5">
-                  <button
-                    onClick={() => dispatch(openModal(id))}
-                    className="group flex items-center gap-x-1.5 font-bold text-red transition-colors hover:text-palered">
-                    <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-palered transition-colors" d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368" /></svg>Delete
-                  </button>
-                  <button
-                    onClick={toggleEditBox}
+            <div className="md:flex gap-x-5 hidden">
+              {
+                user.username === currentUser.username
+                  ? <>
+                    <button
+                      onClick={() => dispatch(openModal(id))}
+                      className="group flex items-center gap-x-1.5 font-bold text-red transition-colors hover:text-palered">
+                      <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-palered transition-colors" d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368" /></svg>Delete
+                    </button>
+                    <button
+                      onClick={toggleEditBox}
+                      className="group flex items-center gap-x-1.5 font-bold text-purple transition-colors hover:text-hover">
+                      <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6" /></svg>Edit
+                    </button>
+                  </>
+                  : <button
+                    onClick={toggleReplyBox}
                     className="group flex items-center gap-x-1.5 font-bold text-purple transition-colors hover:text-hover">
-                    <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6" /></svg>Edit
+                    <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6" /></svg>Reply
                   </button>
-                </div>
-                : <button
-                  onClick={toggleReplyBox}
-                  className="group flex items-center gap-x-1.5 font-bold text-purple transition-colors hover:text-hover">
-                  <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6" /></svg>Reply
-                </button>
-            }
+              }
+            </div>
           </div>
           {
             isEditActive
@@ -96,6 +99,28 @@ const Comment = ({ id, user, content, createdAt, score, replyingTo, parentId = i
               : <p className="text-gray-500">
                 {replyingTo && <span className="text-purple font-medium">@{replyingTo}</span>}{formatContent(content)}
               </p>
+          }
+        </div>
+        <div className="flex gap-x-5 md:hidden justify-end">
+          {
+            user.username === currentUser.username
+              ? <>
+                <button
+                  onClick={() => dispatch(openModal(id))}
+                  className="group flex items-center gap-x-1.5 font-bold text-red transition-colors hover:text-palered">
+                  <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-palered transition-colors" d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368" /></svg>Delete
+                </button>
+                <button
+                  onClick={toggleEditBox}
+                  className="group flex items-center gap-x-1.5 font-bold text-purple transition-colors hover:text-hover">
+                  <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6" /></svg>Edit
+                </button>
+              </>
+              : <button
+                onClick={toggleReplyBox}
+                className="group flex items-center gap-x-1.5 font-bold text-purple transition-colors hover:text-hover">
+                <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path className="group-hover:fill-hover transition-colors" d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6" /></svg>Reply
+              </button>
           }
         </div>
       </div>

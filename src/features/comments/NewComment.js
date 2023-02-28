@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../user/user-slice";
 import { newComment } from "./comments-slice";
@@ -10,6 +10,24 @@ const NewComment = () => {
   const user = useSelector(selectUser);
 
   const textarea = useRef(null);
+
+
+  useEffect(() => {
+    const current = textarea.current;
+
+    if (current !== null) {
+
+      const handleChange = () => {
+        current.style.height = current.scrollHeight + "px";
+      }
+
+      handleChange();
+
+      current.addEventListener('keyup', handleChange);
+      
+      return () => current.removeEventListener('keyup', handleChange);
+    }
+  }, [textarea.current]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,11 +44,11 @@ const NewComment = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="flex bg-white p-6 rounded-lg gap-x-5">
+    <form onSubmit={handleSubmit} className="grid md:grid-cols-[auto_1fr_auto] grid-cols-2 bg-white p-6 rounded-lg gap-5">
       <img className="h-10 w-10" src={user?.image?.png} />
-      <textarea ref={textarea} required placeholder="Add a comment..." className="border rounded-lg resize-none flex-grow h-24 px-4 py-2 outline-none focus:ring-1 focus:ring-purple placeholder:text-gray-500"></textarea>
+      <textarea ref={textarea} required placeholder="Add a comment..." className="md:col-auto md:row-auto row-start-1 col-start-1 col-end-3 overflow-hidden border rounded-lg resize-none flex-grow h-24 px-4 py-2 outline-none focus:ring-1 focus:ring-purple placeholder:text-gray-500"></textarea>
       <button
-        className="text-white font-medium uppercase h-fit py-3 px-8 rounded-lg bg-purple transition-colors hover:bg-hover">
+        className="justify-self-end text-white font-medium uppercase w-fit h-fit py-3 px-8 rounded-lg bg-purple transition-colors hover:bg-hover">
         Send
       </button>
     </form>
