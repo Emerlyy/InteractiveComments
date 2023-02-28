@@ -5,30 +5,18 @@ import { selectAllComments } from "./comments-slice";
 
 const CommentList = () => {
 
-  const comments = useSelector(selectAllComments);
-
-  console.log(comments);
-
-  const dispatch = useDispatch();
+  const comments = [...useSelector(selectAllComments)];
 
   // const onChangeScore = (id, value) => {
   //   dispatch(changeScore({ id, value }));
   // }
 
-  const createReplyBox = (id) => {
-    console.log(id);
-  }
-
   return (
     <ul className="flex flex-col gap-y-6 mb-6">
-      {comments.map((comment) => {
+      {comments.sort((a, b) => b.score >= a.score ? 1 : -1).map((comment) => {
         return (
           <li key={comment.id}>
-            <Comment onReply={createReplyBox} {...comment}>
-              {comment.replies.map((reply) => {
-                return <li key={reply.id}><Comment {...reply} /></li>
-              })}
-            </Comment>
+            <Comment {...comment} />
           </li>
         )
       })}

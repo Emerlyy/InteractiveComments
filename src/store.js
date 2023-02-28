@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import commentsReducer from "./features/comments/comments-slice";
+import modalReducer from "./features/modal/modalSlice";
 import userReducer from "./features/user/user-slice";
 
 const store = configureStore({
@@ -7,6 +8,7 @@ const store = configureStore({
   reducer: {
     comments: commentsReducer,
     user: userReducer,
+    modal: modalReducer
   },
 });
 

@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     screens: {
-      sm: '480px',
+      sm: '320px',
       md: '768px',
       lg: '900px',
     },
@@ -13,7 +13,11 @@ module.exports = {
       colors: {
         main: '#f5f6fa',
         purple: '#5357b6',
-        hover: '#C5C6EF'
+        red: '#ED6368',
+        palered: '#FFB8BB',
+        hover: '#C5C6EF',
+        graydark: '#68727e',
+        grayhover: '#8c9aaa'
       },
     },
   },

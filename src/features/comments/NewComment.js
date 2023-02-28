@@ -9,14 +9,17 @@ const NewComment = () => {
 
   const user = useSelector(selectUser);
 
-  console.log(user);
-
   const textarea = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(newComment(textarea.current.value));
+    const content = textarea.current.value;
+
+    if (content.trim().length === 0)
+      return;
+
+    dispatch(newComment(content));
 
     e.currentTarget.reset();
   }
