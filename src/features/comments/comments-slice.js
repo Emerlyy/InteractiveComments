@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import findCommentById from "../../utils/findCommentById";
 
 // export const changeVotesCount = createAsyncThunk(
 //   'comments/changeVotesCount',

@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import Comment from "./Comment";
-import { selectAllComments } from "./comments-slice";
+import { useComments } from './useComments';
 
 const CommentList = () => {
 
-  const comments = [...useSelector(selectAllComments)];
-
-  // const onChangeScore = (id, value) => {
-  //   dispatch(changeScore({ id, value }));
-  // }
+  const comments = useComments();
 
   return (
     <ul className="flex flex-col gap-y-6 mb-6">
