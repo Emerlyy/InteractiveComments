@@ -17,9 +17,10 @@ const EditContent = ({ id, onClose, replyingTo = '', children }) => {
     const current = textarea.current;
 
     if (current !== null) {
-
       const handleChange = () => {
-        current.style.height = current.scrollHeight + "px";
+        if (current.scrollHeight - current.clientHeight > 5) {
+          current.style.height = current.scrollHeight + "px";
+        }
       }
 
       handleChange();
@@ -28,7 +29,7 @@ const EditContent = ({ id, onClose, replyingTo = '', children }) => {
 
       return () => current.removeEventListener('keyup', handleChange);
     }
-  }, [textarea.current]);
+  }, [textarea]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,9 +48,13 @@ const EditContent = ({ id, onClose, replyingTo = '', children }) => {
   const handleChange = (e) => {
     const value = e.target.value;
 
-    value.length < replyingTo.length + 1
-      ? setValue(`@${replyingTo}`)
-      : setValue(e.target.value);
+    if (replyingTo !== '') {
+      value.length < replyingTo.length + 1
+        ? setValue(`@${replyingTo}`)
+        : setValue(e.target.value);
+    } else {
+      setValue(e.target.value);
+    }
   }
 
   return (
